@@ -7,25 +7,26 @@
 ---
 
 ## 🌟 The Vision
-Traditional static analysis tools find syntax errors. Human testers find gameplay bugs. **Chaos Engine V3** bridge the gap by using Gemini 3's advanced reasoning to understand *gameplay logic*. It doesn't just check if your code runs; it checks if your game can be broken, exploited, or optimized.
+Traditional static analysis tools find syntax errors. Human testers find functional bugs. **Chaos Engine V3** bridges the gap by using Gemini 2.0's advanced reasoning to understand *logic and intent*. It doesn't just check if your code runs; it checks if your system can be broken, exploited, or optimized across multiple domains.
 
-## 🤖 The Multi-Agent "Red Team"
-We deploy three specialized AI personalities to "attack" your code from different angles:
+## 🤖 Universal Multi-Agent Domains
+We deploy specialized AI personality "Red Teams" tailored to your specific project needs:
 
-1. **💥 The Griefer**: An elite exploit-hunter. Its only goal is to find crash vulnerabilities, input-injection loops, and ways to break your game engine's state machine. 
-2. **⚡ The Speedrunner**: A performance perfectionist. It looks for sequence breaks, wall-clips in your logic, and algorithmic bottlenecks to ensure frame-perfect gameplay.
-3. **🔍 The Auditor**: A AAA standards expert. It monitors code health, maintainability, and architectural best practices to ensure your project is ready for the global stage.
+1. **🎮 Game QA**: Exploit hunters and performance optimizers for AAA or indie game logic.
+2. **💻 Software/Web**: Security auditors and architecture reviewers for enterprise-grade applications.
+3. **🎓 Learning/Education**: Mentors and concept analyzers to help developers grow and learn.
+4. **🎧 Customer Support**: Bug reproducers and diagnostic experts to solve user issues in record time.
 
-## 🧬 Powered by Gemini 3 & Imagen 4
-*   **Gemini 3 Pro (Thinking Mode)**: We leverage the `thinking_budget` feature to allow the agents to "simulate" game state transitions in their heads before reaching a conclusion.
-*   **Gemini 3 Flash**: Provides lightning-fast initial triage and handles rapid-fire code audits.
-*   **Imagen 4 (Visual Bug Reporting)**: A world-first feature. Chaos Engine transforms abstract text bugs (like "Floating point overflow") into **Cinematic Visual Proofs**. It generates high-quality 3D-style visualizations of the bug's impact, allowing artists and designers to understand technical failures instantly.
+## 🧬 Powered by Gemini 2.0 & Imagen 4
+*   **Gemini 2.0 Pro/Flash (Thinking Mode)**: We leverage the latest `thinking_budget` features to allow the agents to simulate complex logic transitions in their heads before reaching a conclusion.
+*   **Imagen 4 (Universal Bug Reporting)**: Chaos Engine transforms abstract technical failures into **Cinematic Visual Proofs**. Whether it's a game glitch or a security breach, Imagen 4 visualizes the impact for stakeholders.
 
 ## 🚀 Key Features
-*   **Auto-Language Detection**: Supports Python, C#, C++, JavaScript, TypeScript, and Java.
-*   **Interactive Control Center**: Load examples, run real-time audits, and monitor "Live Logs."
-*   **Automated Fix Proposals**: View side-by-side code diffs showing exactly how to fix the detected vulnerabilities.
-*   **Hackathon-Ready UI**: A premium, futuristic cyberpunk aesthetic designed to WOW at first glance.
+*   **Universal Domain Switching**: One platform for Game, Software, Learning, and Support analysis.
+*   **Auto-Language Detection**: Supports Python, JavaScript, TypeScript, C#, C++, and Java.
+*   **Deep Reasoning Logs**: Watch the "Live Logs" to see the agents think through edge cases in real-time.
+*   **Automated Fix Proposals**: View side-by-side code diffs showing exactly how to resolve vulnerabilities.
+*   **Premium Cyberpunk UI**: A futuristic, high-performance interface that responds dynamically to your selected domain.
 
 ## 📦 How to Run (Quick Start)
 

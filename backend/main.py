@@ -35,21 +35,185 @@ import base64
 class CodeSubmission(BaseModel):
     code: str
     api_key: str | None = None
+    domain: str = "game"  # "game", "software", "learning", "support"
 
 class BugVisualizationRequest(BaseModel):
     bug_description: str
     bug_type: str  # "crash", "glitch", "performance", "logic"
     api_key: str | None = None
 
+# Domain Configuration System
+DOMAIN_CONFIG = {
+    "game": {
+        "title": "Game QA Mode",
+        "agents": {
+            "griefer": {"name": "Griefer", "icon": "💥", "role": "Exploit Hunter"},
+            "speedrunner": {"name": "Speedrunner", "icon": "⚡", "role": "Performance Optimizer"},
+            "auditor": {"name": "Auditor", "icon": "🔍", "role": "Code Quality Expert"}
+        },
+        "prompt_template": """You are the "Chaos Engine V3" in GAME QA MODE - an elite autonomous game testing system with three specialized AI agents.
+
+**YOUR MISSION:** Perform deep analysis of this game code using advanced reasoning. Auto-detect the programming language and adapt your analysis accordingly.
+
+**CODE TO ANALYZE:**
+```
+{code}
+```
+
+**ANALYSIS FRAMEWORK:**
+
+1. **GRIEFER AGENT** (Exploit Hunter):
+   - Find crash vulnerabilities, input exploits, edge cases, buffer overflows
+   - Identify ways to break game logic, physics, or memory safety
+   - Rate severity: CRITICAL/HIGH/MEDIUM/LOW
+   - Provide step-by-step exploit reproduction
+
+2. **SPEEDRUNNER AGENT** (Performance Optimizer):
+   - Identify skippable logic, physics exploits, sequence breaks
+   - Find optimization opportunities (algorithmic, memory, rendering)
+   - Suggest shortcuts or frame-perfect execution possibilities
+   - Analyze performance bottlenecks
+
+3. **AUDITOR AGENT** (Code Quality Expert):
+   - Check for logic errors, missing error handling, null pointer risks
+   - Evaluate code quality, maintainability, and best practices
+   - Identify style violations and anti-patterns
+   - Provide actionable recommendations
+
+**IMPORTANT:** Use deep reasoning to understand the game's state machine and logic flow. Think through edge cases systematically."""
+    },
+    "software": {
+        "title": "Software/Web App Mode",
+        "agents": {
+            "griefer": {"name": "Security Agent", "icon": "🛡️", "role": "Security Auditor"},
+            "speedrunner": {"name": "Performance Agent", "icon": "🚀", "role": "Performance Analyst"},
+            "auditor": {"name": "Architecture Agent", "icon": "🏗️", "role": "Design Reviewer"}
+        },
+        "prompt_template": """You are the "Chaos Engine V3" in SOFTWARE/WEB APP MODE - an elite autonomous software quality system with three specialized AI agents.
+
+**YOUR MISSION:** Perform comprehensive analysis of this software/web application code using advanced reasoning.
+
+**CODE TO ANALYZE:**
+```
+{code}
+```
+
+**ANALYSIS FRAMEWORK:**
+
+1. **SECURITY AGENT** (Security Auditor):
+   - Find SQL injection, XSS, CSRF, authentication bypass vulnerabilities
+   - Identify insecure data handling, weak encryption, exposed secrets
+   - Check for OWASP Top 10 vulnerabilities
+   - Rate severity: CRITICAL/HIGH/MEDIUM/LOW
+   - Provide exploitation scenarios
+
+2. **PERFORMANCE AGENT** (Performance Analyst):
+   - Detect N+1 query problems, memory leaks, inefficient algorithms
+   - Identify slow API endpoints, blocking operations, resource bottlenecks
+   - Find opportunities for caching, lazy loading, pagination
+   - Suggest optimization strategies
+
+3. **ARCHITECTURE AGENT** (Design Reviewer):
+   - Evaluate SOLID principles, design patterns, separation of concerns
+   - Check for tight coupling, code duplication, circular dependencies
+   - Assess scalability, maintainability, testability
+   - Provide architectural recommendations
+
+**IMPORTANT:** Focus on production-ready code quality, security best practices, and enterprise-grade architecture."""
+    },
+    "learning": {
+        "title": "Learning/Education Mode",
+        "agents": {
+            "griefer": {"name": "Concept Analyzer", "icon": "🎓", "role": "Learning Analyst"},
+            "speedrunner": {"name": "Bug Injector", "icon": "🧪", "role": "Exercise Creator"},
+            "auditor": {"name": "Mentor Agent", "icon": "👨‍🏫", "role": "Teaching Assistant"}
+        },
+        "prompt_template": """You are the "Chaos Engine V3" in LEARNING/EDUCATION MODE - an intelligent tutoring system with three specialized AI agents.
+
+**YOUR MISSION:** Analyze this student code to provide educational insights and create learning opportunities.
+
+**CODE TO ANALYZE:**
+```
+{code}
+```
+
+**ANALYSIS FRAMEWORK:**
+
+1. **CONCEPT ANALYZER** (Learning Analyst):
+   - Identify programming concepts demonstrated (loops, recursion, OOP, etc.)
+   - Assess understanding level: BEGINNER/INTERMEDIATE/ADVANCED
+   - Find conceptual gaps or misunderstandings
+   - Highlight what the student did well
+
+2. **BUG INJECTOR** (Exercise Creator):
+   - Suggest intentional bugs to create learning exercises
+   - Propose "fix this code" challenges at appropriate difficulty
+   - Design debugging scenarios that reinforce concepts
+   - Create progressive difficulty levels
+
+3. **MENTOR AGENT** (Teaching Assistant):
+   - Provide step-by-step explanations of how the code works
+   - Suggest improvements with educational rationale
+   - Offer alternative approaches with pros/cons
+   - Give encouragement and constructive feedback
+
+**IMPORTANT:** Be encouraging, educational, and focus on building understanding rather than just finding errors."""
+    },
+    "support": {
+        "title": "Customer Support Mode",
+        "agents": {
+            "griefer": {"name": "Bug Reproducer", "icon": "🔬", "role": "Issue Investigator"},
+            "speedrunner": {"name": "Root Cause Analyzer", "icon": "🎯", "role": "Diagnostic Expert"},
+            "auditor": {"name": "Solution Agent", "icon": "💡", "role": "Fix Recommender"}
+        },
+        "prompt_template": """You are the "Chaos Engine V3" in CUSTOMER SUPPORT MODE - an autonomous bug reproduction and diagnostic system.
+
+**YOUR MISSION:** Analyze this code in the context of a customer-reported issue. Help reproduce, diagnose, and solve the problem.
+
+**CODE TO ANALYZE:**
+```
+{code}
+```
+
+**ANALYSIS FRAMEWORK:**
+
+1. **BUG REPRODUCER** (Issue Investigator):
+   - Attempt to reproduce the reported issue from the code
+   - Identify conditions that trigger the bug
+   - Create step-by-step reproduction instructions
+   - Rate reproducibility: ALWAYS/SOMETIMES/RARE/CANNOT_REPRODUCE
+
+2. **ROOT CAUSE ANALYZER** (Diagnostic Expert):
+   - Trace the bug to specific code sections and line numbers
+   - Explain WHY the bug occurs (root cause, not just symptoms)
+   - Identify related issues that might have the same root cause
+   - Assess impact on users
+
+3. **SOLUTION AGENT** (Fix Recommender):
+   - Provide concrete fix recommendations with code examples
+   - Suggest workarounds for immediate relief
+   - Recommend preventive measures to avoid similar issues
+   - Estimate fix complexity: TRIVIAL/SIMPLE/MODERATE/COMPLEX
+
+**IMPORTANT:** Focus on practical, actionable solutions that can be communicated to both technical and non-technical stakeholders."""
+    }
+}
+
+def get_domain_config(domain: str):
+    """Get configuration for the specified domain"""
+    return DOMAIN_CONFIG.get(domain, DOMAIN_CONFIG["game"])
+
 @app.post("/analyze")
 async def analyze_code(submission: CodeSubmission):
     api_key = submission.api_key or os.getenv("GEMINI_API_KEY")
+    domain_config = get_domain_config(submission.domain)
     
     print(f"[DEBUG] API Key status: {bool(api_key) and api_key != 'your_key_here'}")
+    print(f"[DEBUG] Domain: {submission.domain} - {domain_config['title']}")
     
     if api_key and api_key != "your_key_here":
         try:
-            print("[DEBUG] Attempting Gemini 3 API call with advanced features...")
+            print(f"[DEBUG] Attempting Gemini 3 API call for {domain_config['title']}...")
             client = genai.Client(api_key=api_key)
             
             # Define the response schema for structured output
@@ -102,44 +266,17 @@ async def analyze_code(submission: CodeSubmission):
             
             print(f"[DEBUG] Detected language: {detected_lang}")
             
-            prompt = f"""You are the "Chaos Engine V3", an elite autonomous game QA system with three specialized AI agents.
-
-**YOUR MISSION:** Perform deep analysis of this game code using advanced reasoning. Auto-detect the programming language and adapt your analysis accordingly.
-
-**CODE TO ANALYZE:**
-```
-{submission.code}
-```
-
-**ANALYSIS FRAMEWORK:**
-
-1. **GRIEFER AGENT** (Exploit Hunter):
-   - Find crash vulnerabilities, input exploits, edge cases, buffer overflows
-   - Identify ways to break game logic, physics, or memory safety
-   - Rate severity: CRITICAL/HIGH/MEDIUM/LOW
-   - Provide step-by-step exploit reproduction
-
-2. **SPEEDRUNNER AGENT** (Performance Optimizer):
-   - Identify skippable logic, physics exploits, sequence breaks
-   - Find optimization opportunities (algorithmic, memory, rendering)
-   - Suggest shortcuts or frame-perfect execution possibilities
-   - Analyze performance bottlenecks
-
-3. **AUDITOR AGENT** (Code Quality Expert):
-   - Check for logic errors, missing error handling, null pointer risks
-   - Evaluate code quality, maintainability, and best practices
-   - Identify style violations and anti-patterns
-   - Provide actionable recommendations
-
-**IMPORTANT:** Use deep reasoning to understand the game's state machine and logic flow. Think through edge cases systematically. Adapt your analysis to the detected programming language's specific vulnerabilities (e.g., memory safety for C++, async issues for JavaScript, null reference for C#)."""
+            # Use domain-specific prompt
+            prompt = domain_config['prompt_template'].format(code=submission.code)
 
             # Use Gemini 3 Pro for complex analysis with extended thinking
             # Falls back to Gemini 3 Flash if Pro unavailable
+            # Use Gemini 2.0 models for cutting-edge reasoning
             models_to_try = [
-                ("models/gemini-3-pro-preview", 24000, "Gemini 3 Pro (Extended Reasoning)"),
-                ("models/gemini-3-flash-preview", 12000, "Gemini 3 Flash (Fast Analysis)"),
-                ("models/gemini-1.5-pro-latest", 8000, "Gemini 1.5 Pro (Fallback)"),
-                ("models/gemini-1.5-flash-latest", 0, "Gemini 1.5 Flash (Basic)")
+                ("models/gemini-2.0-pro-exp-02-05", 32000, "Gemini 2.0 Pro (Next-Gen Thinking)"),
+                ("models/gemini-2.0-flash-thinking-exp", 32000, "Gemini 2.0 Flash Thinking"),
+                ("models/gemini-2.0-flash", 0, "Gemini 2.0 Flash (Turbo)"),
+                ("models/gemini-1.5-pro-latest", 8000, "Gemini 1.5 Pro (Legacy)")
             ]
             
             last_error = None
@@ -181,15 +318,16 @@ async def analyze_code(submission: CodeSubmission):
                         "status": "complete",
                         "mode": f"REAL_{model_label.split()[0].upper().replace('.', '_')}",
                         "model_used": model_label,
+                        "domain": submission.domain,
                         "agents": agents_result,
                         "raw_analysis": result,
                         "logs": [
                             f"🚀 Connected to {model_label}...",
-                            "🧠 [DEEP THINKING] Analyzing game state machine..." if thinking_budget > 0 else "⚡ [FAST MODE] Analyzing code patterns...",
-                            "🤖 [GRIEFER] Fuzzing input vectors with exploit chains...",
-                            "🤖 [SPEEDRUNNER] Simulating frame-perfect execution paths...",
-                            "🤖 [AUDITOR] Performing deep code quality analysis...",
-                            f"✅ ANALYSIS COMPLETE ({model_label})"
+                            f"🧠 [UNIVERSAL REASONING] Analyzing {submission.domain} logic...",
+                            f"🤖 [{domain_config['agents']['griefer']['name']}] {domain_config['agents']['griefer']['role']} sequence active...",
+                            f"🤖 [{domain_config['agents']['speedrunner']['name']}] {domain_config['agents']['speedrunner']['role']} analysis running...",
+                            f"🤖 [{domain_config['agents']['auditor']['name']}] {domain_config['agents']['auditor']['role']} evaluation complete...",
+                            f"✅ {domain_config['title']} ANALYSIS COMPLETE"
                         ]
                     }
                     
@@ -210,8 +348,7 @@ async def analyze_code(submission: CodeSubmission):
                 },
                 "logs": [
                     f"🔥 CRITICAL ERROR: {last_error[:150]}",
-                    "⚠️ Tried: Gemini 3 Pro → 3 Flash → 1.5 Pro → 1.5 Flash",
-                    "⚠️ Check https://ai.google.dev/gemini-api/docs/models",
+                    "⚠️ Tried: Gemini 2.0 Pro → Flash → 1.5 Pro",
                     "❌ All models unavailable"
                 ]
             }
@@ -223,22 +360,45 @@ async def analyze_code(submission: CodeSubmission):
                 "logs": [f"🚨 FATAL: {str(outer_e)}"]
             }
 
-    # Demo mode
-    print("[DEBUG] Running in DEMO mode")
+    # Demo mode - Domain Aware
+    print(f"[DEBUG] Running in DEMO mode for domain: {submission.domain}")
     time.sleep(1.5)
+    
+    demo_data = {
+        "game": {
+            "griefer": "Potential buffer overflow in input handling [Severity: CRITICAL] (Demo)",
+            "speedrunner": "O(N^2) complexity detected in particle simulation (Demo)",
+            "auditor": "Class 'PhysicsEngine' is too large (God Object pattern) [Quality: D] (Demo)"
+        },
+        "software": {
+            "griefer": "SQL Injection vulnerability in login query [Severity: CRITICAL] (Demo)",
+            "speedrunner": "Blocking I/O detected on the main event loop (Demo)",
+            "auditor": "Missing CSRF protection on mutation endpoints [Quality: F] (Demo)"
+        },
+        "learning": {
+            "griefer": "Missing base case in recursive function 'calculate' [Severity: HIGH] (Demo)",
+            "speedrunner": "Redundant loop detected - could use list comprehension (Demo)",
+            "auditor": "Variable naming 'a', 'b', 'c' should be more descriptive [Quality: B-] (Demo)"
+        },
+        "support": {
+            "griefer": "Reproduced: Discount is applied to shipping instead of subtotal [Severity: HIGH] (Demo)",
+            "speedrunner": "Race condition in state update during high-load checkout (Demo)",
+            "auditor": "Error handling swallows the exception at line 42 [Quality: C] (Demo)"
+        }
+    }
+    
+    current_demo = demo_data.get(submission.domain, demo_data["game"])
+    
     return {
         "status": "complete",
         "mode": "DEMO_MOCK",
-        "agents": {
-            "griefer": "Found unhandled exception when health is negative [Severity: HIGH] (Demo)",
-            "speedrunner": "Possible wall-clip in collision detection logic (Demo)",
-            "auditor": "Function 'take_damage' lacks type hinting and docstrings [Quality: C+] (Demo)"
-        },
+        "domain": submission.domain,
+        "agents": current_demo,
         "logs": [
-            "⚠️ API KEY MISSING - RUNNING IN DEMO MODE",
-            "[DEMO] Simulating Griefer analysis...",
-            "[DEMO] Simulating Speedrunner analysis...",
-            "[DEMO] Simulating Auditor analysis...",
+            "⚠️ API KEY MISSING - RUNNING IN DOMAIN DEMO MODE",
+            f"[DEMO] Analyzing as {domain_config['title']}...",
+            f"[DEMO] Simulating {domain_config['agents']['griefer']['name']}...",
+            f"[DEMO] Simulating {domain_config['agents']['speedrunner']['name']}...",
             "✅ DEMO ANALYSIS COMPLETE"
         ]
     }
@@ -317,6 +477,19 @@ Make it look like a professional bug report screenshot from a AAA game studio.""
             "message": str(e)
         }
 
+
+@app.get("/domains")
+async def get_domains():
+    """Return available domains and their configurations"""
+    return {
+        "domains": {
+            domain_key: {
+                "title": config["title"],
+                "agents": config["agents"]
+            }
+            for domain_key, config in DOMAIN_CONFIG.items()
+        }
+    }
 
 @app.get("/health")
 async def health_check():
