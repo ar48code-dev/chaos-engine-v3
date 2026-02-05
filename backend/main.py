@@ -245,7 +245,7 @@ async def analyze_code(submission: CodeSubmission):
 
 @app.post("/generate-bug-visual")
 async def generate_bug_visual(request: BugVisualizationRequest):
-    """Generate a visual representation of the bug using Imagen 3"""
+    """Generate a visual representation of the bug using Imagen 4"""
     api_key = request.api_key or os.getenv("GEMINI_API_KEY")
     
     if not api_key or api_key == "your_key_here":

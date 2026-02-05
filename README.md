@@ -1,49 +1,60 @@
-# ⚡ Chaos Engine V3: Autonomous Multi-Agent Game QA
+# ⚡ Chaos Engine V3
+### Autonomous Multi-Agent Game QA System
 
-**Chaos Engine V3** is a state-of-the-art Game QA automation system built for the **Gemini 3 Hackathon**. It leverages the advanced reasoning capabilities of Gemini 3 Pro and Flash to perform deep, multi-perspective analysis of game logic.
+> **Designed for the Gemini 3 Hackathon Challenge**
+> *Turning dry code analysis into a cinematic, multi-agent adventure.*
+
+---
+
+## 🌟 The Vision
+Traditional static analysis tools find syntax errors. Human testers find gameplay bugs. **Chaos Engine V3** bridge the gap by using Gemini 3's advanced reasoning to understand *gameplay logic*. It doesn't just check if your code runs; it checks if your game can be broken, exploited, or optimized.
+
+## 🤖 The Multi-Agent "Red Team"
+We deploy three specialized AI personalities to "attack" your code from different angles:
+
+1. **💥 The Griefer**: An elite exploit-hunter. Its only goal is to find crash vulnerabilities, input-injection loops, and ways to break your game engine's state machine. 
+2. **⚡ The Speedrunner**: A performance perfectionist. It looks for sequence breaks, wall-clips in your logic, and algorithmic bottlenecks to ensure frame-perfect gameplay.
+3. **🔍 The Auditor**: A AAA standards expert. It monitors code health, maintainability, and architectural best practices to ensure your project is ready for the global stage.
+
+## 🧬 Powered by Gemini 3 & Imagen 4
+*   **Gemini 3 Pro (Thinking Mode)**: We leverage the `thinking_budget` feature to allow the agents to "simulate" game state transitions in their heads before reaching a conclusion.
+*   **Gemini 3 Flash**: Provides lightning-fast initial triage and handles rapid-fire code audits.
+*   **Imagen 4 (Visual Bug Reporting)**: A world-first feature. Chaos Engine transforms abstract text bugs (like "Floating point overflow") into **Cinematic Visual Proofs**. It generates high-quality 3D-style visualizations of the bug's impact, allowing artists and designers to understand technical failures instantly.
 
 ## 🚀 Key Features
+*   **Auto-Language Detection**: Supports Python, C#, C++, JavaScript, TypeScript, and Java.
+*   **Interactive Control Center**: Load examples, run real-time audits, and monitor "Live Logs."
+*   **Automated Fix Proposals**: View side-by-side code diffs showing exactly how to fix the detected vulnerabilities.
+*   **Hackathon-Ready UI**: A premium, futuristic cyberpunk aesthetic designed to WOW at first glance.
 
-- **Autonomous Multi-Agent Analysis**: Three specialized agents (Griefer, Speedrunner, Auditor) analyze your code with different goals.
-- **Gemini 3 Extended Thinking**: Uses Gemini 3 Pro's "Thinking" mode to systematically explore edge cases and state machine vulnerabilities.
-- **Visual Bug Reporting (Imagen 4)**: Automatically generates high-quality cinematic visualizations of detected bugs using the latest Imagen 4 model.
-- **Automated Fix Proposals**: Not only finds bugs but proposes code fixes with a side-by-side diff view.
-- **Language Agnostic**: Deeply understands Python, C#, C++, and JavaScript/TypeScript game modules.
+## 📦 How to Run (Quick Start)
 
-## 🛠️ Technology Stack
+The project is designed to be "Zero-Config" using our autonomous repair script.
 
-- **Frontend**: Next.js 15, Framer Motion (for cinematic animations), Tailwind CSS.
-- **Backend**: FastAPI (Python), Google GenAI SDK.
-- **Models**: Gemini 3 Pro (Preview), Gemini 3 Flash (Preview), Imagen 4.
-
-## 📦 How to Run
-
-1. **Clone the Repo**:
+1. **Clone the Project**:
    ```bash
-   git clone https://github.com/[YOUR_USERNAME]/chaos-engine-v3.git
+   git clone https://github.com/ar48code-dev/chaos-engine-v3.git
    cd chaos-engine-v3
    ```
 
-2. **Launch with One Script**:
-   We've included a robust repair and run script to handle environment setup automatically.
+2. **One-Command Setup & Launch**:
+   Run our "Super Script" which automatically handles Python virtual environments, Node.js dependencies, and server synchronization:
    ```bash
-   chmod +x run_chaos.sh
-   ./run_chaos.sh
+   chmod +x start.sh
+   ./start.sh
    ```
 
-3. **Open the App**:
-   Navigate to [http://localhost:3000](http://localhost:3000).
+3. **Access the Engine**:
+   - **Frontend**: [http://localhost:3000](http://localhost:3000)
+   - **API Status**: [http://localhost:8000/health](http://localhost:8000/health)
 
-4. **Add API Key**:
-   Click **Settings** in the UI and paste your Gemini API Key to enable the Advanced AI features.
+4. **Enable Real AI**:
+   The app starts in **Demo Mode**. To use real Gemini 3 analysis, click the **Settings** icon in the UI and paste your [Google AI Studio API Key](https://aistudio.google.com/app/apikey).
 
-## 🏆 Hackathon Submission Details
-
-- **Vision**: To eliminate "day-one" game-breaking bugs by providing developers with an AI-powered "Red Team."
-- **Gemini Usage**: 
-  - **Gemini 3 Pro**: Used for the "Extended Thinking" mode to analyze complex game state transitions.
-  - **Gemini 3 Flash**: Used for rapid initial screening and fallback during high-traffic audits.
-  - **Imagen 4**: Transforms dry text bug reports into cinematic "Visual Proof of Concept" images.
+## 🛠️ Tech Stack
+- **Frontend**: Next.js 15, Tailwind CSS, Framer Motion, Lucide React.
+- **Backend**: FastAPI, Google GenAI SDK 1.0+, Pydantic V2.
+- **AI Models**: Gemini 3 Pro (Preview), Gemini 3 Flash, Imagen 4.
 
 ---
-*Created by Anirban for the Gemini 3 Hackathon Challenge.*
+*Developed by Anirban with ❤️ for the Gemini 3 Hackathon.*
