@@ -271,11 +271,11 @@ async def analyze_code(submission: CodeSubmission):
 
             # Use Gemini 3 Pro for complex analysis with extended thinking
             # Falls back to Gemini 3 Flash if Pro unavailable
-            # Use Gemini 2.0 models for cutting-edge reasoning
+            # Prioritize Gemini 3 models for the Hackathon Challenge
             models_to_try = [
-                ("models/gemini-2.0-pro-exp-02-05", 32000, "Gemini 2.0 Pro (Next-Gen Thinking)"),
-                ("models/gemini-2.0-flash-thinking-exp", 32000, "Gemini 2.0 Flash Thinking"),
-                ("models/gemini-2.0-flash", 0, "Gemini 2.0 Flash (Turbo)"),
+                ("models/gemini-3-pro-preview", 32000, "Gemini 3 Pro (Next-Gen Reasoning)"),
+                ("models/gemini-3-flash-preview", 16000, "Gemini 3 Flash (Fast Analysis)"),
+                ("models/gemini-2.0-pro-exp-02-05", 32000, "Gemini 2.0 Pro (Experimental)"),
                 ("models/gemini-1.5-pro-latest", 8000, "Gemini 1.5 Pro (Legacy)")
             ]
             

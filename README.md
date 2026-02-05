@@ -6,8 +6,7 @@
 
 ---
 
-## 🌟 The Vision
-Traditional static analysis tools find syntax errors. Human testers find functional bugs. **Chaos Engine V3** bridges the gap by using Gemini 2.0's advanced reasoning to understand *logic and intent*. It doesn't just check if your code runs; it checks if your system can be broken, exploited, or optimized across multiple domains.
+Traditional static analysis tools find syntax errors. Human testers find functional bugs. **Chaos Engine V3** bridges the gap by using Gemini 3's advanced reasoning to understand *logic and intent*. It doesn't just check if your code runs; it checks if your system can be broken, exploited, or optimized across multiple domains.
 
 ## 🤖 Universal Multi-Agent Domains
 We deploy specialized AI personality "Red Teams" tailored to your specific project needs:
@@ -17,8 +16,8 @@ We deploy specialized AI personality "Red Teams" tailored to your specific proje
 3. **🎓 Learning/Education**: Mentors and concept analyzers to help developers grow and learn.
 4. **🎧 Customer Support**: Bug reproducers and diagnostic experts to solve user issues in record time.
 
-## 🧬 Powered by Gemini 2.0 & Imagen 4
-*   **Gemini 2.0 Pro/Flash (Thinking Mode)**: We leverage the latest `thinking_budget` features to allow the agents to simulate complex logic transitions in their heads before reaching a conclusion.
+## 🧬 Powered by Gemini 3 & Imagen 4
+*   **Gemini 3 Pro/Flash (Thinking Mode)**: We leverage the latest `thinking_budget` features to allow the agents to simulate complex logic transitions in their heads before reaching a conclusion.
 *   **Imagen 4 (Universal Bug Reporting)**: Chaos Engine transforms abstract technical failures into **Cinematic Visual Proofs**. Whether it's a game glitch or a security breach, Imagen 4 visualizes the impact for stakeholders.
 
 ## 🚀 Key Features

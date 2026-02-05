@@ -63,7 +63,17 @@ const SettingsModal = ({
                 <h3 className="font-orbitron text-xl text-white mb-4">⚙️ SYSTEM_CONFIG</h3>
                 <div className="space-y-4">
                     <div>
-                        <label className="block text-xs text-gray-400 mb-1">GOOGLE GEMINI API KEY</label>
+                        <div className="flex justify-between items-center mb-1">
+                            <label className="block text-xs text-gray-400">GOOGLE GEMINI API KEY</label>
+                            <a
+                                href="https://aistudio.google.com/app/apikey"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[10px] text-primary hover:underline"
+                            >
+                                🔑 Get Key from AI Studio
+                            </a>
+                        </div>
                         <input
                             type="password"
                             value={apiKey}
@@ -72,8 +82,7 @@ const SettingsModal = ({
                             className="w-full bg-black/50 border border-white/10 rounded p-3 text-sm text-white focus:border-primary focus:outline-none"
                         />
                         <p className="text-[10px] text-gray-500 mt-2">
-                            * Your key is sent securely to the backend for this session only.
-                            It allows Real AI Analysis instead of Demo Mode.
+                            * Your key enables 🤖 <b>Gemini 3 Advanced Analysis</b> instead of Demo Mode.
                         </p>
                     </div>
                 </div>
