@@ -207,6 +207,10 @@ export default function Home() {
     const [bugVisual, setBugVisual] = React.useState<string | null>(null);
     const [isGeneratingVisual, setIsGeneratingVisual] = React.useState(false);
 
+    // Video State
+    const [videoFile, setVideoFile] = React.useState<File | null>(null);
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
+
     // Domain State
     const [selectedDomain, setSelectedDomain] = React.useState<string>('game');
     const [domainConfig, setDomainConfig] = React.useState<any>(null);
@@ -304,27 +308,49 @@ print(calculate_average(scores))`,
         setResults(null);
         setActiveAgent(null);
         setLogs([]); // Clear previous
-        addLog("🚀 Initializing Chaos Engine V3...");
-        addLog("📡 Connecting to AI Agents...");
+        addLog(`🚀 Initializing Chaos Engine V3 [${selectedDomain.toUpperCase()} MODE]...`);
+
+        if (videoFile) {
+            addLog("🎥 MULTIMODAL MODE: Uploading bug recording for correlation...");
+        } else {
+            addLog("📡 Connecting to AI Agents...");
+        }
 
         try {
-            const response = await fetch('http://localhost:8000/analyze', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    code,
-                    api_key: apiKey, // Pass the key from UI
-                    domain: selectedDomain // Pass selected domain
-                }),
-            });
+            let data;
+            if (videoFile) {
+                // Multimodal Analysis
+                const formData = new FormData();
+                formData.append('video', videoFile);
+                formData.append('code', code);
+                formData.append('domain', selectedDomain);
+                if (apiKey) formData.append('api_key', apiKey);
 
-            const data = await response.json();
+                const response = await fetch('http://localhost:8000/analyze-video', {
+                    method: 'POST',
+                    body: formData,
+                });
+                data = await response.json();
+            } else {
+                // Code-only Analysis
+                const response = await fetch('http://localhost:8000/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code,
+                        api_key: apiKey,
+                        domain: selectedDomain
+                    }),
+                });
+                data = await response.json();
+            }
 
             if (data.logs) {
                 data.logs.forEach((l: string) => addLog(l));
             }
             setResults(data.agents);
             setAnalysisMode(data.mode || 'DEMO_MOCK');
+            setVideoFile(null); // Reset after check
             addLog("✨ Audit sequence finished successfully.");
             addLog("📊 Click 'View Summary' for comprehensive report.");
         } catch (error) {
@@ -519,6 +545,19 @@ print(calculate_average(scores))`,
                                     >
                                         Load Example
                                     </button>
+                                    <button
+                                        onClick={() => fileInputRef.current?.click()}
+                                        className={`px-3 py-1 text-xs rounded border transition-all flex items-center gap-1 ${videoFile ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
+                                    >
+                                        {videoFile ? `🎥 ${videoFile.name.substring(0, 10)}...` : '🎞️ Link Video'}
+                                    </button>
+                                    <input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        className="hidden"
+                                        accept="video/*"
+                                        onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
+                                    />
                                     <button className="px-3 py-1 text-xs bg-white/5 hover:bg-white/10 rounded border border-white/10 cursor-not-allowed text-gray-500">
                                         Upload File
                                     </button>

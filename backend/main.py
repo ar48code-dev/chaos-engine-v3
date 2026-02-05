@@ -1,15 +1,21 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
+import shutil
+from pathlib import Path
 
 load_dotenv()
 
 app = FastAPI(
     title="Chaos Engine V3 API",
-    description="Autonomous Multi-Agent Game QA System Backend",
-    version="3.0.0"
+    description="Universal Multi-Agent AI Code & Video Analysis System",
+    version="3.5.0"
 )
+
+# Create temp directory for video uploads
+UPLOAD_DIR = Path("temp_uploads")
+UPLOAD_DIR.mkdir(exist_ok=True)
 
 # CORS Configuration
 app.add_middleware(
@@ -22,7 +28,7 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    return {"message": "Chaos Engine V3 Backend Online 🚀"}
+    return {"message": "Chaos Engine V3 Universal Backend Online 🚀"}
 
 from pydantic import BaseModel
 import time
@@ -477,6 +483,116 @@ Make it look like a professional bug report screenshot from a AAA game studio.""
             "message": str(e)
         }
 
+
+@app.post("/analyze-video")
+async def analyze_video(
+    video: UploadFile = File(...),
+    code: str = Form(...),
+    domain: str = Form("support"),
+    api_key: str = Form(None)
+):
+    """Analyze a bug video in correlation with source code using Gemini 3 Multimodal reasoning"""
+    key = api_key or os.getenv("GEMINI_API_KEY")
+    if not key or key == "your_key_here":
+        # Simulate demo video analysis
+        time.sleep(3)
+        return {
+            "status": "complete",
+            "mode": "DEMO_VIDEO_MOCK",
+            "agents": {
+                "griefer": "WATCHED: At 0:02 mark, the UI flickered red. This correlates with the unhandled exception in the logic [Severity: HIGH] (Demo)",
+                "speedrunner": "WATCHED: The frame rate dropped to 12fps during the particle burst (Demo)",
+                "auditor": "WATCHED: Fix the race condition identified at the timestamp 0:05 (Demo)"
+            },
+            "logs": [
+                "🎥 PROCESSING MULTIMODAL VIDEO INPUT...",
+                "🧠 CORRELATING VISUAL FRAMES WITH SOURCE CODE...",
+                "✅ VIDEO ANALYSIS COMPLETE (MOCKED)"
+            ]
+        }
+
+    try:
+        # Save video locally
+        local_path = UPLOAD_DIR / video.filename
+        with local_path.open("wb") as buffer:
+            shutil.copyfileobj(video.file, buffer)
+
+        client = genai.Client(api_key=key)
+        
+        # 1. Upload file to Gemini API
+        print(f"[VIDEO] Uploading {video.filename} to Gemini...")
+        uploaded_file = client.files.upload(path=str(local_path))
+        
+        # 2. Wait for processing
+        while uploaded_file.state == "PROCESSING":
+            print(".", end="", flush=True)
+            time.sleep(2)
+            uploaded_file = client.files.get(name=uploaded_file.name)
+        
+        if uploaded_file.state == "FAILED":
+            raise Exception("Video processing failed on Gemini servers")
+
+        # 3. Analyze with Gemini 3 Pro (Thinking Mode)
+        prompt = f"""You are the "Multimodal Chaos Engine". I have provided a video recording of a bug and the corresponding source code.
+
+**CODE:**
+```
+{code}
+```
+
+**YOUR TASK:**
+1. Watch the video carefully.
+2. Identify the EXACT moment the bug occurs (provide timestamps).
+3. Correlate the visual evidence with the source code.
+4. Tell me which part of the code is responsible for what we see in the video.
+
+Return your analysis in the standard Chaos Engine JSON format for 3 agents (Griefer, Speedrunner, Auditor). In the findings, focus on the "Watched" evidence from the video."""
+
+        response_schema = {
+            "type": "object",
+            "properties": {
+                "griefer": {"type": "object", "properties": {"finding": {"type": "string"}}, "required": ["finding"]},
+                "speedrunner": {"type": "object", "properties": {"finding": {"type": "string"}}, "required": ["finding"]},
+                "auditor": {"type": "object", "properties": {"finding": {"type": "string"}}, "required": ["finding"]}
+            },
+            "required": ["griefer", "speedrunner", "auditor"]
+        }
+
+        print("[VIDEO] Generating Multimodal reasoning...")
+        response = client.models.generate_content(
+            model="models/gemini-3-pro-preview",
+            contents=[uploaded_file, prompt],
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json",
+                response_schema=response_schema,
+                thinking_config=types.ThinkingConfig(thinking_budget=16000)
+            )
+        )
+
+        result = response.parsed
+        
+        # Cleanup
+        os.remove(local_path)
+
+        return {
+            "status": "complete",
+            "mode": "REAL_MULTIMODAL_GEMINI_3",
+            "agents": {
+                "griefer": result.griefer.finding,
+                "speedrunner": result.speedrunner.finding,
+                "auditor": result.auditor.finding
+            },
+            "logs": [
+                "🎥 MULTIMODAL PIPELINE ACTIVE",
+                f"📂 {video.filename} uploaded and processed",
+                "🧠 [VIDEO REASONING] Correlating frames with code symbols...",
+                "✅ MULTIMODAL CONTEXTUAL ANALYSIS COMPLETE"
+            ]
+        }
+
+    except Exception as e:
+        print(f"[VIDEO ERROR] {e}")
+        return {"status": "error", "message": str(e)}
 
 @app.get("/domains")
 async def get_domains():
