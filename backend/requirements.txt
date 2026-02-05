@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+google-genai>=1.0.0
+python-multipart
+matplotlib
+pillow
+python-dotenv
+websockets
+pydantic

@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Next.js
+node_modules/
+.next/
+out/
+build/
+.DS_Store
+*.local
+
+# Logs
+logs/
+*.log
+
+# Sensitive
+.vscode/
+*.sh.bak
