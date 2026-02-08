@@ -39,8 +39,10 @@ cd ..
 # ------------------------------------------
 echo "Setting up Frontend..."
 cd frontend
+# Force legacy-peer-deps for stability
 if [ ! -d "node_modules" ]; then
-    npm install --quiet
+    echo "Installing frontend dependencies (this may take a minute)..."
+    npm install --legacy-peer-deps --quiet
 fi
 cd ..
 
@@ -49,6 +51,7 @@ cd ..
 echo "Cleaning up ports..."
 fuser -k 3000/tcp > /dev/null 2>&1
 fuser -k 8000/tcp > /dev/null 2>&1
+sleep 2
 
 # 6. LAUNCH
 # ------------------------------------------
@@ -57,20 +60,41 @@ echo "=========================================="
 echo "✅ SETUP COMPLETE! Launching now..."
 echo "=========================================="
 
+# Start Backend
 cd backend
-./venv/bin/python main.py &
+echo "🚀 Starting Backend on http://localhost:8000"
+./venv/bin/python main.py > ../backend.log 2>&1 &
 BACKEND_PID=$!
 
+# Start Frontend
 cd ../frontend
-npm run dev &
+echo "🚀 Starting Frontend on http://localhost:3000"
+# Use --ignore-scripts to skip potentially broken builds for faster startup
+npm run dev -- --port 3000 > ../frontend.log 2>&1 &
 FRONTEND_PID=$!
 
-echo "Frontend starting at: http://localhost:3000"
-echo "Backend starting at: http://localhost:8000"
+echo ""
 echo "=========================================="
-echo "Wait about 30 seconds, then open Chrome to http://localhost:3000"
+echo "⏳ WAITING FOR SERVERS TO INITIALIZE..."
+echo "=========================================="
+
+# Wait for frontend to be ready
+ATTEMPTS=0
+while ! curl -s http://localhost:3000 > /dev/null; do
+    sleep 2
+    ATTEMPTS=$((ATTEMPTS+1))
+    echo -n "."
+    if [ $ATTEMPTS -gt 30 ]; then
+        echo -e "\n⚠️ Frontend taking a while to start. Please check http://localhost:3000 manually soon."
+        break
+    fi
+done
+
+echo -e "\n✨ EVERYTHING IS READY!"
+echo "👉 OPEN THIS LINK: http://localhost:3000"
+echo "=========================================="
 echo "Press Ctrl+C to stop both servers."
 
 # Keep running and handle cleanup
-trap "kill $BACKEND_PID $FRONTEND_PID; exit" INT
+trap "echo 'Stopping servers...'; kill $BACKEND_PID $FRONTEND_PID; exit" INT
 wait
