@@ -1,8 +1,9 @@
 # ⚡ Chaos Engine V3
 ### Autonomous Multi-Agent Game QA System
 
-> **Designed for the Gemini 3 Hackathon Challenge**
-> *Turning dry code analysis into a cinematic, multi-agent adventure.*
+> **Designed for the Gemini 3 Hackathon Challenge**  
+> Turning abstract code analysis into a high-fidelity, AI-driven visual experience.
+*
 
 ---
 
