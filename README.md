@@ -1,9 +1,9 @@
+
 # ⚡ Chaos Engine V3
 ### Autonomous Multi-Agent Game QA System
 
-> **Designed for the Gemini 3 Hackathon Challenge**  
-> Turning abstract code analysis into a high-fidelity, AI-driven visual experience.
-*
+> **Designed for the Gemini 3 Hackathon Challenge**
+> *Turning dry code analysis into a cinematic, multi-agent adventure.*
 
 ---
 
@@ -17,9 +17,8 @@ We deploy specialized AI personality "Red Teams" tailored to your specific proje
 3. **🎓 Learning/Education**: Mentors and concept analyzers to help developers grow and learn.
 4. **🎧 Customer Support**: Bug reproducers and diagnostic experts to solve user issues in record time.
 
-## 🧬 Powered by Gemini 3 & Imagen 4
+## 🧬 Powered by Gemini 3
 *   **Gemini 3 Pro/Flash (Thinking Mode)**: We leverage the latest `thinking_budget` features to allow the agents to simulate complex logic transitions in their heads before reaching a conclusion.
-*   **Imagen 4 (Universal Bug Reporting)**: Chaos Engine transforms abstract technical failures into **Cinematic Visual Proofs**. Whether it's a game glitch or a security breach, Imagen 4 visualizes the impact for stakeholders.
 
 ## 🚀 Key Features
 *   **Universal Domain Switching**: One platform for Game, Software, Learning, and Support analysis.
@@ -30,59 +29,32 @@ We deploy specialized AI personality "Red Teams" tailored to your specific proje
 
 ## 📦 How to Run (Quick Start)
 
-### **Option 1: One-Command Launch (Recommended)**
-```bash
-git clone https://github.com/ar48code-dev/chaos-engine-v3.git
-cd chaos-engine-v3
-chmod +x start.sh
-./start.sh
-```
+The project is designed to be "Zero-Config" using our autonomous repair script.
 
-**⏳ Wait 30-60 seconds** for setup to complete, then **open your browser** to:
-```
-http://localhost:3000
-```
+1. **Clone the Project**:
+   ```bash
+   git clone https://github.com/ar48code-dev/chaos-engine-v3.git
+   cd chaos-engine-v3
+   ```
 
-The script will:
-- ✅ Auto-install Python dependencies
-- ✅ Auto-install Node.js dependencies  
-- ✅ Launch both backend (port 8000) and frontend (port 3000)
-- ✅ Keep running until you press `Ctrl+C`
+2. **One-Command Setup & Launch**:
+   Run our "Super Script" which automatically handles Python virtual environments, Node.js dependencies, and server synchronization:
+   ```bash
+   chmod +x start.sh
+   ./start.sh
+   ```
 
-### **Option 2: Manual Setup**
-If the auto-script doesn't work on your system:
+3. **Access the Engine**:
+   - **Frontend**: [http://localhost:3000](http://localhost:3000)
+   - **API Status**: [http://localhost:8000/health](http://localhost:8000/health)
 
-**Backend:**
-```bash
-cd backend
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-python main.py
-```
-
-**Frontend (in a new terminal):**
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Then open: **http://localhost:3000**
-
----
-
-## 🔑 Getting Your API Key
-1. Click the **⚙️ Settings** button in the top-right
-2. Click **"🔑 Get Key from AI Studio"** (opens Google AI Studio)
-3. Generate a free API key
-4. Paste it into the settings modal
-5. Now you can run **Real Gemini 3 Analysis** instead of Demo Mode!
+4. **Enable Real AI**:
+   The app starts in **Demo Mode**. To use real Gemini 3 analysis, click the **Settings** icon in the UI and paste your [Google AI Studio API Key](https://aistudio.google.com/app/apikey).
 
 ## 🛠️ Tech Stack
 - **Frontend**: Next.js 15, Tailwind CSS, Framer Motion, Lucide React.
 - **Backend**: FastAPI, Google GenAI SDK 1.0+, Pydantic V2.
-- **AI Models**: Gemini 3 Pro (Preview), Gemini 3 Flash, Imagen 4.
+- **AI Models**: Gemini 3 Pro (Preview), Gemini 3 Flash.
 
 ---
 *Developed by Anirban with ❤️ for the Gemini 3 Hackathon.*
